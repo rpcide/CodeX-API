@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { runCode } = require("./run-code");
 const { supportedLanguages } = require("./run-code/instructions");
 
