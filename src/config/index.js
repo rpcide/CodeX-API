@@ -4,4 +4,4 @@ const config = {
   TIMEOUT,
 };
 
-export default config;
+module.exports = config;

@@ -10,10 +10,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 const { info } = require("./run-code/info");
+const queue = require("express-queue");
+const queueMw = queue({ activeLimit: 2, queuedLimit: -1 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(queueMw);
 
 const sendResponse = (res, statusCode, body) => {
   const timeStamp = Date.now();
@@ -26,6 +29,9 @@ const sendResponse = (res, statusCode, body) => {
 };
 
 app.post("/", async (req, res) => {
+  console.log("queueLength: " + queueMw.queue.getLength());
+  console.log(queueMw);
+
   try {
     const output = await runCode(req.body);
     sendResponse(res, 200, output);
